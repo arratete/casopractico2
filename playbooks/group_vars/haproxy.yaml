@@ -1,0 +1,8 @@
+---
+
+haproxy_rpms: ['haproxy']
+
+haproxy_debs: ['haproxy']
+
+apache1_ip: '10.0.2.6'
+apache2_ip: '10.0.2.7'

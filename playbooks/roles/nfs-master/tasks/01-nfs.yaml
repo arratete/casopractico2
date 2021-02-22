@@ -1,0 +1,27 @@
+---
+
+- name: Install nfs (Red Hat)
+  dnf:
+    name: "{{ nfs_items }}"
+    state: installed
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: CentOS System Start
+  shell: systemctl enable nfs-server; systemctl start nfs-server
+  become: yes
+
+- name: Modify Exports
+  shell: echo '/srv/nfs 10.0.2.5(rw,sync)' > /etc/exports && exportfs -r && exportfs -s
+  become: yes
+
+- name: Open Firewall
+  shell: firewall-cmd --permanent --add-service=nfs; firewall-cmd --permanent --add-service=rpc-bind; firewall-cmd --permanent --add-service=mountd; firewall-cmd --reload
+  become: yes
+
+#- name: install httpd (Debian)
+#  apt:
+#    name: "{{ httpd_debs }}"
+#    state: present
+#  become: yes
+#  when: ansible_os_family == 'Debian'

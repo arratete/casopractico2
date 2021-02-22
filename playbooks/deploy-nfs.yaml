@@ -1,0 +1,9 @@
+---
+
+- name: Instalacion del servidor NFS
+  hosts: master
+  vars_files:
+    - "group_vars/nfs.yaml"
+  gather_facts: true
+  roles:
+    - nfs-master
