@@ -7,11 +7,11 @@ master
 worker
 [nfs]
 master
+[fail-nfs]
+master
 [haproxy]
 master
 worker
 [apache]
 master
 worker
-[nfs-master]
-master

@@ -1,0 +1,8 @@
+---
+
+- name: Modify Exports - Absent Exports File
+  file: 
+    path: /etc/exports
+    state: absent
+  become: yes
+

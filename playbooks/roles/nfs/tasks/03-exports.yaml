@@ -1,0 +1,18 @@
+---
+
+- name: Modify Exports - Touch Exports File
+  file: 
+    path: /etc/exports
+    state: touch
+  become: yes
+
+- name: Modify Exports - Write Line Exports File
+  lineinfile: 
+    path: /etc/exports
+    line: '/srv/nfs 10.0.2.5(rw,sync)'
+  become: yes
+
+- name: Modify Exports - Apply Configure Changes
+  shell: exportfs -r && exportfs -s
+  become: yes
+

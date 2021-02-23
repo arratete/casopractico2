@@ -1,5 +1,0 @@
----
-
-nfs_items: ['nfs-utils', 'net-tools']
-
-#httpd_debs: ['apache2', 'apache2-bin', 'openssl']

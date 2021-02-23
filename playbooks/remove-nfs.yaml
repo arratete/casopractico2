@@ -1,9 +1,9 @@
 ---
 
-- name: Deploy NFS Server
+- name: Remove NFS Server
   hosts: master
   vars_files:
     - "group_vars/nfs.yaml"
   gather_facts: true
   roles:
-    - nfs
+    - fail-nfs
