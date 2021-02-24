@@ -1,0 +1,11 @@
+---
+
+- name: Configuration DNS Servers
+  blockinfile: 
+    path: /etc/hosts
+    insertafter: EOF
+    block: |
+      10.0.2.4  master
+      10.0.2.5  worker 
+  become: yes
+

@@ -1,0 +1,10 @@
+---
+
+- name: Deploy Kubernetes
+  hosts: kubernetes
+  vars_files:
+    - "group_vars/kubernetes.yaml"
+  gather_facts: true
+  roles:
+    - kubernetes
+

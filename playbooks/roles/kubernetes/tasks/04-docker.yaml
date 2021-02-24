@@ -1,0 +1,22 @@
+---
+
+- name: Docker(1) - Add Docker Repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  become: yes
+
+- name: Docker(2) - Install Docker
+#  shell: dnf install docker-ce --nobest --allowerasing
+  dnf:
+    name: docker-ce
+    state: latest
+  become: yes
+
+- name: Docker(3) - Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+

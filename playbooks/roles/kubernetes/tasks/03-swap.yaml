@@ -1,0 +1,12 @@
+---
+
+- name: Deactivate Swap
+  shell: swapoff -a
+  become: yes
+
+- name: Modify /etc/fstab/
+  shell: sed -i '/swap/d' /etc/fstab
+  become: yes
+  args:
+    warn: false
+
