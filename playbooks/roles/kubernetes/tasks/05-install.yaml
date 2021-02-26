@@ -1,12 +1,10 @@
----
-
-- name: Kubernetes - Add Kubernetes Repo (Touch)
+- name: Kubernetes(1/4) - Add Kubernetes Repo (Touch)
   file:
     path: /etc/yum.repos.d/kubernetes.repo
     state: touch
   become: yes
 
-- name: Kubernetes - Add Kubernetes Repo (Write)
+- name: Kubernetes(2/4) - Add Kubernetes Repo (Write)
   blockinfile:
     path: /etc/yum.repos.d/kubernetes.repo
     block: |
@@ -19,23 +17,24 @@
       gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
       exclude=kubelet kubeadm kubectl
     insertafter: EOF
+    marker: ¨¨
   become: yes
 
-- name: Kubernetes -  Install Binaries
+- name: Kubernetes(3/4) -  Install Binaries
   dnf: 
     name:
       - kubelet
       - kubeadm
       - kubectl 
     state: present
-    update_cache: yes
     disable_excludes: kubernetes
   become: yes
 
-- name: Kubernetes - Restart Kubelet
-  service:
-    name: kubelet
-    state: restarted
+- name: Kubernetes(4/4) - Restart Kubelet
+  systemd:
+    name: kubelet    
+    state: started
     enabled: yes
+    daemon_reload: yes
   become: yes
 

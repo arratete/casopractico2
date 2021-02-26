@@ -1,5 +1,3 @@
----
-
 - name: Firewall Configuration for NFS
   firewalld:
     service: "{{ item }}"
@@ -12,3 +10,8 @@
     - "rpc-bind"
     - "mountd"
 
+- name: Reload Firewall
+  systemd:
+    name: firewalld    
+    state: reloaded
+  become: yes

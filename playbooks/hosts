@@ -5,16 +5,9 @@ ansible_user=ansible
 master
 [workers]
 worker
-[nfs]
-master
-[fail-nfs]
-master
 [haproxy]
 master
 worker
 [apache]
-master
-worker
-[kubernetes]
 master
 worker

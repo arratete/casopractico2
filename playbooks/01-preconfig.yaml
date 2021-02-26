@@ -1,0 +1,31 @@
+- name: Pre Configuration Tasks
+  hosts: all
+  become: yes
+  vars_files:
+    - 'group_vars/preconfig.yaml'
+  tasks:
+  - name: Set Time Zone
+    timezone:
+      name: Europe/Madrid  
+
+  - name: Install Chrony 
+    dnf:
+      name: chrony 
+      state: latest  
+
+  - name: Enable and Start Chronyd
+    systemd:
+      name: chronyd    
+      state: started
+      enabled: yes
+
+  - name: Enable ntp
+    command: /usr/bin/timedatectl set-ntp true
+
+  - name: Disable SELinux 
+    shell: sed -i s/=enforcing/=disabled/g /etc/selinux/config
+
+  - name: Install nfs-utils nfs4-acl-tools
+    dnf:
+      name: '{{ preconfig_items }}' 
+      state: latest     

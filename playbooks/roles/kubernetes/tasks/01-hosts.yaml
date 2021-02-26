@@ -1,11 +1,11 @@
----
-
-- name: Configuration DNS Servers
+- name: Hosts(1/1) - Configuration DNS Servers
   blockinfile: 
     path: /etc/hosts
-    insertafter: EOF
+    marker: ¨¨
     block: |
       10.0.2.4  master
       10.0.2.5  worker 
+    insertafter: EOF
+    marker: ¨¨
   become: yes
 

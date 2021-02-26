@@ -1,18 +1,26 @@
----
-
-- name: Modify Exports - Touch Exports File
+- name: Touch Exports File
   file: 
     path: /etc/exports
     state: touch
   become: yes
 
-- name: Modify Exports - Write Line Exports File
+- name: Write Line Exports File
   lineinfile: 
     path: /etc/exports
-    line: '/srv/nfs 10.0.2.5(rw,sync)'
+    line: '/srv/nfs "{{ item.line }}"(rw,sync)'      
+  with_items:
+    - { vm: 'master', line: '10.0.1.4'}
+    - { vm: 'worker01', line: '10.0.1.5'}
+  # - { vm: 'worker02', line: '10.0.1.13'}
   become: yes
 
-- name: Modify Exports - Apply Configure Changes
+- name: Create nfs Directory
+  file: 
+    path: /srv/nfs
+    state: directory
+  become: yes
+
+- name: Apply Configure Changes
   shell: exportfs -r && exportfs -s
   become: yes
 

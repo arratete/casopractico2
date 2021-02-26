@@ -1,5 +1,0 @@
----
-
-#kubernetes_items_rh: ['nfs-utils', 'net-tools']
-
-#kubernetes_items_deb: ['nfs-kernel-server', 'nfs-common']
