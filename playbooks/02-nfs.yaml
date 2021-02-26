@@ -1,5 +1,3 @@
----
-
 - name: Deploy NFS Server
   hosts: master
   vars_files:

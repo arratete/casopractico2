@@ -9,9 +9,3 @@
     - "nfs"
     - "rpc-bind"
     - "mountd"
-
-- name: Reload Firewall
-  systemd:
-    name: firewalld    
-    state: reloaded
-  become: yes

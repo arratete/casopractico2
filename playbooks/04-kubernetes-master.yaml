@@ -1,0 +1,57 @@
+- name: Setup Kubernetes on Master
+  hosts: master
+  become: yes
+  tasks:
+  - name: Kubernetes Master (1/9) - Firewall Configuration for Kubernetes Services
+    firewalld:
+      port: "{{ item }}"
+      permanent: yes
+      state: enabled
+      immediate: yes
+    become: yes
+    with_items:
+      - "6443/tcp"
+      - "2379-2380/tcp"
+      - "10250/tcp"
+      - "10251/tcp"
+      - "10255/tcp"
+
+  - name: Kubernetes Master (2/9) - kudeadm Configuration
+    shell: kubeadm config images pull
+    become: yes
+
+  - name: Kubernetes Master (3/9) - Firewall Allow Access from Workers
+    firewalld:
+      rich_rule: "{{ item }}"
+      permanent: yes
+      state: enabled
+      immediate: yes
+    become: yes
+    with_items:
+      - "rule family=ipv4 source address=10.0.2.5/24 accept"
+    #- "rule family=ipv4 source address=192.168.1.112/32 accept"
+
+  - name: Kubernetes Master (4/9) - Firewall Allow Access to Localhost
+    firewalld:
+      rich_rule: "rule family=ipv4 source address=172.17.0.0/16 accept"
+      zone: public
+      permanent: yes
+      state: enabled
+      immediate: yes
+    become: yes
+
+  - name: Kubernetes Master (5/9) - Install CNI (Container Network Interface)
+    shell: kubeadm init --pod-network-cidr 192.169.0.0/16
+    become: yes
+
+  - name: Kubernetes Master (6/9) - Create kube Directory
+    file: 
+      path: /root/.kube
+      state: directory
+    become: yes
+
+  # - name: Kubernetes Master (1) - Create kube Directory
+  # file: 
+  #   path: /root/.kube
+  #   state: directory
+  # become: yes
