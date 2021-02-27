@@ -1,7 +1,4 @@
-- name: Workers Configuration
-  hosts: workers
-  become: yes
-  tasks:
+
   - name: Kubernetes Workers (1/8) - Open Ports
     firewalld:
       port: "{{ item }}"
@@ -13,5 +10,7 @@
       - "10250/tcp"
       - "30000-32767/tcp"
 
-
+  - name: Print version
+    debug:
+      msg: "{{ hostvars['master']['kudeadm'] }}"
   

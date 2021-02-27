@@ -9,8 +9,8 @@
     path: /etc/exports
     line: '/srv/nfs "{{ item.line }}"(rw,sync)'      
   with_items:
-    - { vm: 'master', line: '10.0.1.4'}
-    - { vm: 'worker01', line: '10.0.1.5'}
+    - { vm: 'master', line: '10.0.2.4'}
+    - { vm: 'worker01', line: '10.0.2.5'}
   # - { vm: 'worker02', line: '10.0.1.13'}
   become: yes
 

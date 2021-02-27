@@ -1,0 +1,24 @@
+
+  - name: SDN(1/5) - Check tigera-operator namespace already exists
+    shell: kubectl get namespace tigera-operator
+    register: tigera_operator
+    ignore_errors: yes
+
+  - name: SDN(2/5) - Install tigera-operator
+    shell: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+    when: not tigera_operator is search("Active")
+  
+  - name: SDN(3/5) - Download Calico
+    get_url:
+      url: https://docs.projectcalico.org/manifests/custom-resources.yaml
+      dest: ./custom-resources.yaml
+
+  - name: SDN(4/5) - Replace cidr
+    replace:
+       path: ./custom-resources.yaml
+       regexp: '192.168.0.0/16'
+       replace: "192.169.0.0/16"
+  
+  - name: SDN(5/5) - Install Calico
+    shell: kubectl apply -f ./custom-resources.yaml
+  

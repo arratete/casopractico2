@@ -1,9 +1,4 @@
-- name: Pre Configuration Tasks
-  hosts: all
-  become: yes
-  vars_files:
-    - 'group_vars/preconfig.yaml'
-  tasks:
+
   - name: Set Time Zone
     timezone:
       name: Europe/Madrid  
