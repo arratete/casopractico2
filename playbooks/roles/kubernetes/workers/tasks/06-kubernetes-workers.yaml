@@ -10,7 +10,16 @@
       - "10250/tcp"
       - "30000-32767/tcp"
 
-  - name: Print version
+  - name: Print kudeadm
     debug:
-      msg: "{{ hostvars['master']['kudeadm'] }}"
+      msg: "{{ hostvars['master']['kudeadm_init'] }}"
+
+  - name: Execute kudeadm
+    shell: "{{ hostvars['master']['kudeadm_init'] }}"
+    ignore_errors: yes
+
+  - name: Set kudeadm_join as fact
+    set_fact: kudeadm_join=True
+    
+        
   

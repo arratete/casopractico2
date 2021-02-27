@@ -55,11 +55,11 @@
 
   - name: Kubernetes Master (5/9) - Install CNI (Container Network Interface)
     shell: kubeadm init --pod-network-cidr 192.169.0.0/16 | tail -2
-    register: kudeadm
+    register: kudeadm_init
     #shell: kubeadm init --pod-network-cidr 192.169.0.0/16 --ignore-preflight-errors=NumCPU
 
   - name: Kubernetes Master (6/9) - Set kudeadm output as fact
-    set_fact: kudeadm="{{ kudeadm.stdout }}"
+    set_fact: kudeadm_init="{{ kudeadm_init.stdout }}"
 
   - name: Kubernetes Master (7/9) - Create kube Directory
     file: 

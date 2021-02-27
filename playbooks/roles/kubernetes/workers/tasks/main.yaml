@@ -1,1 +1,2 @@
 - include_tasks: 06-kubernetes-workers.yaml
+  when: hostvars['worker']['kudeadm_join'] is not defined
