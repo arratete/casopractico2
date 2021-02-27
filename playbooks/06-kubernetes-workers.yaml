@@ -1,0 +1,17 @@
+- name: Workers Configuration
+  hosts: workers
+  become: yes
+  tasks:
+  - name: Kubernetes Workers (1/8) - Open Ports
+    firewalld:
+      port: "{{ item }}"
+      permanent: yes
+      state: enabled
+      immediate: yes
+      zone: public
+    with_items:
+      - "10250/tcp"
+      - "30000-32767/tcp"
+
+
+  

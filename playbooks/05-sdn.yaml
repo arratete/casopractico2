@@ -1,0 +1,21 @@
+- name: Install SDN
+  hosts: master
+  become: yes
+  tasks:
+  - name: SDN(1/8) - Install Tigera Operator
+    shell: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml --dry-run=true
+  
+  - name: SDN(1/8) - Download Calico
+    get_url:
+      url: https://docs.projectcalico.org/manifests/custom-resources.yaml
+      dest: /etc/custom-resources.yaml
+
+  - name: Ansible replace string example
+    replace:
+       path: /etc/custom-resources.yaml
+       regexp: '192.168.0.0/16'
+       replace: "192.169.0.0/16"
+  
+  # - name: Install Calico
+  #   shell: kubectl apply -f /etc/custom-resources.yaml
+  
