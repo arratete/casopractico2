@@ -23,3 +23,9 @@
   dnf:
     name: '{{ preconfig_items }}' 
     state: latest     
+
+- name: Enable Firewall
+  systemd:
+    name: firewalld    
+    enabled: yes
+    state: started   

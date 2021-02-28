@@ -1,9 +1,9 @@
 
   - include_tasks: 01-config.yaml
-    when: hostvars['worker']['kudeadm_join'] is not defined
+    when: hostvars['worker01']['kudeadm_join'] is not defined
   - include_tasks: 02-sdn.yaml
-    when: hostvars['worker']['kudeadm_join'] is not  defined
+    when: hostvars['worker01']['kudeadm_join'] is not  defined
   - include_tasks: 03-ingress_controller.yaml
-    when: hostvars['worker']['kudeadm_join'] is defined
+    when: hostvars['worker01']['kudeadm_join'] is defined
   - include_tasks: 04-user.yaml
-    when: hostvars['worker']['kudeadm_join'] is defined
+    when: hostvars['worker01']['kudeadm_join'] is defined

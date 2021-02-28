@@ -1,3 +1,3 @@
 
   - include_tasks: 01-config.yaml
-    when: hostvars['worker']['kudeadm_join'] is not defined
+    when: hostvars['worker01']['kudeadm_join'] is not defined

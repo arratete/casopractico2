@@ -22,12 +22,12 @@
       state: enabled
       immediate: yes
     with_items:
-      - "rule family=ipv4 source address= {{ worker01 }}/24 accept"
-      - "rule family=ipv4 source address= {{ worker02 }}/24 accept"
+      - "rule family=ipv4 source address={{ worker01_private_ip }}/24 accept"
+      - "rule family=ipv4 source address={{ worker02_private_ip }}/24 accept"
 
   - name: Config Kubernetes Master (4/9) - Firewall Allow Access to Localhost
     firewalld:
-      rich_rule: "rule family=ipv4 source address=172.17.0.0/16 accept"
+      rich_rule: "rule family=ipv4 source address=172.17.0.1/16 accept"
       zone: public
       permanent: yes
       state: enabled

@@ -4,10 +4,10 @@
       path: /etc/hosts 
       state: present
       block: |
-        {{ nfs }}  nfs
-        {{ master }}  master
-        {{ worker01 }}  worker01 
-        {{ worker02 }}  worker02
+        {{ nfs_public_ip }}  nfs
+        {{ master_public_ip }}  master
+        {{ worker01_public_ip }}  worker01 
+        {{ worker02_public_ip }}  worker02
       insertafter: EOF
       marker: "## {mark} DNS Servers"
 

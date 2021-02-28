@@ -4,3 +4,8 @@
     nfs_items_rh: ['nfs-utils', 'net-tools']
 
     nfs_items_deb: ['nfs-kernel-server', 'nfs-common']
+
+    master_private_ip: 10.0.1.10
+    nfs_private_ip: 10.0.1.11
+    worker01_private_ip: 10.0.1.12
+    worker02_private_ip: 10.0.1.13
