@@ -1,9 +1,10 @@
-- name: Swap(1/2) - Disable swap
-  shell: swapoff -a
-  when: ansible_swaptotal_mb > 0
 
-- name: Swap(2/2) - Modify /etc/fstab/
-  shell: sed -i '/swap/d' /etc/fstab
-  args:
-    warn: false
+  - name: Swap(1/2) - Disable swap
+    shell: swapoff -a
+    when: ansible_swaptotal_mb > 0
+
+  - name: Swap(2/2) - Modify /etc/fstab/
+    shell: sed -i '/swap/d' /etc/fstab
+    args:
+      warn: false
 

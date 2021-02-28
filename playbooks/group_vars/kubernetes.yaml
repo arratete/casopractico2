@@ -1,0 +1,6 @@
+nfs: 10.0.2.3 
+master: 10.0.2.4 
+worker01: 10.0.2.5
+worker02: 10.0.2.6
+
+username: kubeadmin

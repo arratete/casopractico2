@@ -1,10 +1,13 @@
-- name: Hosts(1/1) - Configuration DNS Servers
-  blockinfile: 
-    path: /etc/hosts
-    marker: ¨¨
-    block: |
-      10.0.2.4  master
-      10.0.2.5  worker 
-    insertafter: EOF
-    marker: ¨¨
+
+  - name: Hosts(1/1) - Configuration DNS Servers
+    blockinfile: 
+      path: /etc/hosts 
+      state: present
+      block: |
+        {{ nfs }}  nfs
+        {{ master }}  master
+        {{ worker01 }}  worker01 
+        {{ worker02 }}  worker02
+      insertafter: EOF
+      marker: "## {mark} DNS Servers"
 

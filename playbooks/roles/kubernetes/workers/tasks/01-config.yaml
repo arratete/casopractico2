@@ -1,24 +1,25 @@
-  - name: Kubernetes Workers (1/8) - Open Ports
-    firewalld:
-      port: "{{ item }}"
-      permanent: yes
-      state: enabled
-      immediate: yes
-      zone: public
-    with_items:
-      - "10250/tcp"
-      - "30000-32767/tcp"
 
-  - name: Print kudeadm
-    debug:
-      msg: "{{ hostvars['master']['kudeadm_init'] }}"
+    - name: Config Kubernetes Workers (1/4) - Open Ports
+      firewalld:
+        port: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+        zone: public
+      with_items:
+        - "10250/tcp"
+        - "30000-32767/tcp"
 
-  - name: Execute kudeadm
-    shell: "{{ hostvars['master']['kudeadm_init'] }}"
-    ignore_errors: yes
+    - name: Config Kubernetes Workers (2/4) - Print kudeadm
+      debug:
+        msg: "{{ hostvars['master']['kudeadm_init'] }}"
 
-  - name: Set kudeadm_join as fact
-    set_fact: kudeadm_join=True
+    - name: Config Kubernetes Workers (3/4) - Execute kudeadm
+      shell: "{{ hostvars['master']['kudeadm_init'] }}"
+      ignore_errors: yes
+
+    - name: Config Kubernetes Workers (4/4) - Set kudeadm_join as fact
+      set_fact: kudeadm_join=True
+      
+          
     
-        
-  

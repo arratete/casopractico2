@@ -1,36 +1,38 @@
-- name: Kubernetes(1/4) - Add Kubernetes Repo (Touch)
-  file:
-    path: /etc/yum.repos.d/kubernetes.repo
-    state: touch
 
-- name: Kubernetes(2/4) - Add Kubernetes Repo (Write)
-  blockinfile:
-    path: /etc/yum.repos.d/kubernetes.repo
-    block: |
-      [kubernetes]
-      name=Kubernetes
-      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-      enabled=1
-      gpgcheck=1
-      repo_gpgcheck=1
-      gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-      exclude=kubelet kubeadm kubectl
-    insertafter: EOF
-    marker: ¨¨
+  - name: Kubernetes(1/4) - Add Kubernetes Repo (Touch)
+    file:
+      path: /etc/yum.repos.d/kubernetes.repo
+      state: touch
 
-- name: Kubernetes(3/4) -  Install Binaries
-  dnf: 
-    name:
-      - kubelet
-      - kubeadm
-      - kubectl 
-    state: present
-    disable_excludes: kubernetes
+  - name: Kubernetes(2/4) - Add Kubernetes Repo (Write)
+    blockinfile:
+      path: /etc/yum.repos.d/kubernetes.repo
+      state: present
+      block: |
+        [kubernetes]
+        name=Kubernetes
+        baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+        enabled=1
+        gpgcheck=1
+        repo_gpgcheck=1
+        gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        exclude=kubelet kubeadm kubectl
+      insertafter: EOF
+      marker: "## {mark} kubernetes.repo"
 
-- name: Kubernetes(4/4) - Restart Kubelet
-  systemd:
-    name: kubelet    
-    state: started
-    enabled: yes
-    daemon_reload: yes
+  - name: Kubernetes(3/4) -  Install Binaries
+    dnf: 
+      name:
+        - kubelet
+        - kubeadm
+        - kubectl 
+      state: present
+      disable_excludes: kubernetes
+
+  - name: Kubernetes(4/4) - Restart Kubelet
+    systemd:
+      name: kubelet    
+      state: started
+      enabled: yes
+      daemon_reload: yes
 

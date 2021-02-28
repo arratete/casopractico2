@@ -1,3 +1,6 @@
-nfs_items_rh: ['nfs-utils', 'net-tools']
+  
+    preconfig_items: ['nfs-utils', 'nfs4-acl-tools', 'wget']
 
-nfs_items_deb: ['nfs-kernel-server', 'nfs-common']
+    nfs_items_rh: ['nfs-utils', 'net-tools']
+
+    nfs_items_deb: ['nfs-kernel-server', 'nfs-common']

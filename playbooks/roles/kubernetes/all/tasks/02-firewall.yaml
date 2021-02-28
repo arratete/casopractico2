@@ -1,28 +1,30 @@
-- name: Firewall(1/5) - Transparent Masquerading = Load br_netfilter Module
-  modprobe:
-    name: br_netfilter
-    state: present
 
-- name: Firewall(2/5) - Transparent Masquerading = Enable Firewall
-  firewalld:
-    masquerade: yes
-    state: enabled
-    permanent: yes
-    immediate: yes
+  - name: Firewall(1/5) - Load br_netfilter Module
+    modprobe:
+      name: br_netfilter
+      state: present
 
-- name: Firewall(3/5) - Handle Traffic = Touch k8s.conf
-  file:
-    path: /etc/sysctl.d/k8s.conf
-    state: touch
+  - name: Firewall(2/5) - Enable Firewall
+    firewalld:
+      masquerade: yes
+      state: enabled
+      permanent: yes
+      immediate: yes
 
-- name: Firewall(4/5) - Handle Traffic = Write k8s.conf
-  blockinfile:
-    path: /etc/sysctl.d/k8s.conf
-    block: |
-      net.bridge.bridge-nf-call-ip6tables = 1
-      net.bridge.bridge-nf-call-iptables = 1
-    insertafter: EOF
-    marker: ¨¨
+  - name: Firewall(3/5) - Touch k8s.conf
+    file:
+      path: /etc/sysctl.d/k8s.conf
+      state: touch
 
-- name: Firewall(5/5) - Handle Traffic = Reload sysctl
-  shell: sysctl --system
+  - name: Firewall(4/5) - Write k8s.conf
+    blockinfile:
+      path: /etc/sysctl.d/k8s.conf
+      state: present
+      block: |
+        net.bridge.bridge-nf-call-ip6tables = 1
+        net.bridge.bridge-nf-call-iptables = 1
+      insertafter: EOF
+      marker: "## {mark} net.bridge"
+
+  - name: Firewall(5/5) - Reload sysctl
+    shell: sysctl --system

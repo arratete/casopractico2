@@ -1,7 +1,6 @@
----
 
-- name: Modify Exports - Absent Exports File
-  file: 
-    path: /etc/exports
-    state: absent
+  - name: Modify Exports - Absent Exports File
+    file: 
+      path: /etc/exports
+      state: absent
 

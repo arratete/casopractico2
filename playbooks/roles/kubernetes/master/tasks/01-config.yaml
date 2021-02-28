@@ -1,5 +1,5 @@
 
-  - name: Kubernetes Master (1/8) - Firewall Configuration for Kubernetes Services
+  - name: Config Kubernetes Master (1/9) - Firewall Configuration for Kubernetes Services
     firewalld:
       port: "{{ item }}"
       permanent: yes
@@ -12,20 +12,20 @@
       - "10251/tcp"
       - "10255/tcp"
 
-  - name: Kubernetes Master (2/8) - kudeadm Configuration
+  - name: Config Kubernetes Master (2/9) - kudeadm Configuration
     shell: kubeadm config images pull
 
-  - name: Kubernetes Master (3/9) - Firewall Allow Access from Workers
+  - name: Config Kubernetes Master (3/9) - Firewall Allow Access from Workers
     firewalld:
       rich_rule: "{{ item }}"
       permanent: yes
       state: enabled
       immediate: yes
     with_items:
-      - "rule family=ipv4 source address=10.0.2.5/24 accept"
-    #- "rule family=ipv4 source address=192.168.1.112/32 accept"
+      - "rule family=ipv4 source address= {{ worker01 }}/24 accept"
+      - "rule family=ipv4 source address= {{ worker02 }}/24 accept"
 
-  - name: Kubernetes Master (4/9) - Firewall Allow Access to Localhost
+  - name: Config Kubernetes Master (4/9) - Firewall Allow Access to Localhost
     firewalld:
       rich_rule: "rule family=ipv4 source address=172.17.0.0/16 accept"
       zone: public
@@ -33,7 +33,7 @@
       state: enabled
       immediate: yes
 
-  - name: Kubernetes Master (5pre/9) - Check Ports
+  - name: Config Kubernetes Master (5pre/9) - Check Ports
     wait_for:
       port: "{{ item }}"
       state: started         
@@ -49,30 +49,30 @@
       #- "10251"
       #- "10255"
 
-  - name: Kubernetes Master (5pre/9) - Reset kudeadm
+  - name: Config Kubernetes Master (5pre/9) - Reset kudeadm
     shell: kubeadm reset -f
     when: port is search("started")
 
-  - name: Kubernetes Master (5/9) - Install CNI (Container Network Interface)
+  - name: Config Kubernetes Master (5/9) - Install CNI (Container Network Interface)
     shell: kubeadm init --pod-network-cidr 192.169.0.0/16 | tail -2
     register: kudeadm_init
     #shell: kubeadm init --pod-network-cidr 192.169.0.0/16 --ignore-preflight-errors=NumCPU
 
-  - name: Kubernetes Master (6/9) - Set kudeadm output as fact
+  - name: Config Kubernetes Master (6/9) - Set kudeadm output as fact
     set_fact: kudeadm_init="{{ kudeadm_init.stdout }}"
 
-  - name: Kubernetes Master (7/9) - Create kube Directory
+  - name: Config Kubernetes Master (7/9) - Create kube Directory
     file: 
       path: /root/.kube
       state: directory
 
-  - name: Kubernetes Master (8/9) - Copy admin.conf
+  - name: Config Kubernetes Master (8/9) - Copy admin.conf
     copy:
       remote_src: yes
       src: /etc/kubernetes/admin.conf
       dest: /root/.kube/config
   
-  - name: Kubernetes Master (9/9) - Change admin.conf permission
+  - name: Config Kubernetes Master (9/9) - Change admin.conf permission
     file:
       path: /etc/kubernetes/admin.conf
       owner: "{{ ansible_effective_user_id }}"

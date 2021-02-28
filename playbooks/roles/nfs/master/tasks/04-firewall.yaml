@@ -1,0 +1,10 @@
+- name: Firewall Configuration for NFS
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  with_items:
+    - "nfs"
+    - "rpc-bind"
+    - "mountd"

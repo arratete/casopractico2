@@ -1,22 +1,36 @@
-- name: User - Create kudeadmin User
-  user:
-    name: kudeadmin
-    create_home: yes
-    password: kudeadmin
 
-- name: User - Create kube Directory
-  file: 
-    path: /home/kubeadmin/.kube
-    state: directory
+  - name: User(1/6) - Create kubeadmin User
+    user:
+      name: "{{ username }}"
+      create_home: yes
+      password: "{{ username | password_hash('sha512') }}"
 
-- name: User - Copy admin.conf
-  copy:
-    remote_src: yes
-    src: /etc/kubernetes/admin.conf
-    dest: /home/kubeadmin/.kube/config
+  - name: User(2/6) - Create kube Directory
+    file: 
+      path: /home/kubeadmin/.kube
+      state: directory
 
-# - name: User - Change admin.conf permission
-#   file:
-#     path: /home/kubeadmin/.kube/config
-#     owner: "{{ ansible_effective_user_id }}"
-#     group: "{{ ansible_effective_group_id }}"
+  - name: User(3/6) - Copy admin.conf
+    copy:
+      remote_src: yes
+      src: /etc/kubernetes/admin.conf
+      dest: /home/kubeadmin/.kube/config
+
+  - name: User(4/6) - Change admin.conf permission
+    file:
+      path: /home/kubeadmin/.kube/config
+      owner: "{{ username }}"
+      group: "{{ username }}"
+
+  - name: User(5/6) - Add kubeadmin file(Touch)
+    file:
+      path: /etc/sudoers.d/kubeadmin
+      state: touch
+
+  - name: User(6/6) - Allow {{ username }} passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers.d/kubeadmin
+      state: present
+      regexp: '^%{{ username }}' 
+      line: '%{{ username }} ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'

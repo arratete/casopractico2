@@ -1,13 +1,12 @@
----
 
-- name: Disable Firewall Configuration for NFS
-  firewalld:
-    service: "{{ item }}"
-    permanent: yes
-    state: disabled
-    immediate: yes
-  with_items:
-    - "nfs"
-    - "rpc-bind"
-    - "mountd"
+  - name: Disable Firewall Configuration for NFS
+    firewalld:
+      service: "{{ item }}"
+      permanent: yes
+      state: disabled
+      immediate: yes
+    with_items:
+      - "nfs"
+      - "rpc-bind"
+      - "mountd"
 

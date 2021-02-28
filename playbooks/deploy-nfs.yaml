@@ -1,8 +1,17 @@
-- name: Deploy NFS Server
-  hosts: master
-  vars_files:
-    - "group_vars/nfs.yaml"
-  gather_facts: true
-  become: yes
-  roles:
-    - nfs
+---
+
+  - hosts: all
+    vars_files:
+      - "group_vars/nfs.yaml"
+    gather_facts: true
+    become: yes
+    roles:
+      - { role: nfs/all, tags: all }
+
+  - hosts: master
+    vars_files:
+      - "group_vars/nfs.yaml"
+    gather_facts: yes
+    become: yes
+    roles:
+      - { role: nfs/master, tags: master }
