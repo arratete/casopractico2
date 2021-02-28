@@ -3,5 +3,6 @@
   vars_files:
     - "group_vars/nfs.yaml"
   gather_facts: true
+  become: yes
   roles:
     - nfs

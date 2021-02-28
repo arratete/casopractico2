@@ -4,5 +4,4 @@
   file: 
     path: /etc/exports
     state: absent
-  become: yes
 

@@ -1,6 +1,8 @@
-- include_tasks: 04-kubernetes-master.yaml
+- include_tasks: 01-config.yaml
   when: hostvars['worker']['kudeadm_join'] is not defined
-- include_tasks: 05-sdn.yaml
+- include_tasks: 02-sdn.yaml
   when: hostvars['worker']['kudeadm_join'] is not  defined
-- include_tasks: 07-ingress_controller.yaml
+- include_tasks: 03-ingress_controller.yaml
+  when: hostvars['worker']['kudeadm_join'] is defined
+- include_tasks: 04-user.yaml
   when: hostvars['worker']['kudeadm_join'] is defined

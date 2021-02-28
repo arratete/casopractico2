@@ -1,16 +1,12 @@
----
-
 - name: Install NFS (Red Hat)
   dnf:
     name: "{{ nfs_items_rh }}"
     state: installed
-  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Install NFS (Debian)
   apt:
     name: "{{ nfs_items_deb }}"
     state: installed
-  become: yes
   when: ansible_os_family == 'Debian'
 

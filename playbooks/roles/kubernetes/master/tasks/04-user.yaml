@@ -1,0 +1,22 @@
+- name: User - Create kudeadmin User
+  user:
+    name: kudeadmin
+    create_home: yes
+    password: kudeadmin
+
+- name: User - Create kube Directory
+  file: 
+    path: /home/kubeadmin/.kube
+    state: directory
+
+- name: User - Copy admin.conf
+  copy:
+    remote_src: yes
+    src: /etc/kubernetes/admin.conf
+    dest: /home/kubeadmin/.kube/config
+
+# - name: User - Change admin.conf permission
+#   file:
+#     path: /home/kubeadmin/.kube/config
+#     owner: "{{ ansible_effective_user_id }}"
+#     group: "{{ ansible_effective_group_id }}"

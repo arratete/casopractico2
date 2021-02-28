@@ -2,7 +2,6 @@
   file: 
     path: /etc/exports
     state: touch
-  become: yes
 
 - name: Write Line Exports File
   lineinfile: 
@@ -12,15 +11,12 @@
     - { vm: 'master', line: '10.0.2.4'}
     - { vm: 'worker01', line: '10.0.2.5'}
   # - { vm: 'worker02', line: '10.0.1.13'}
-  become: yes
 
 - name: Create nfs Directory
   file: 
     path: /srv/nfs
     state: directory
-  become: yes
 
 - name: Apply Configure Changes
   shell: exportfs -r && exportfs -s
-  become: yes
 

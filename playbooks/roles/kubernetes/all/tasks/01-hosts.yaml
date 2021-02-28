@@ -7,5 +7,4 @@
       10.0.2.5  worker 
     insertafter: EOF
     marker: ¨¨
-  become: yes
 

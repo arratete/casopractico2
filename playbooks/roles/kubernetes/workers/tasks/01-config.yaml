@@ -1,4 +1,3 @@
-
   - name: Kubernetes Workers (1/8) - Open Ports
     firewalld:
       port: "{{ item }}"

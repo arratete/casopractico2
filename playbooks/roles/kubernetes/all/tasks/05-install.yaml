@@ -2,7 +2,6 @@
   file:
     path: /etc/yum.repos.d/kubernetes.repo
     state: touch
-  become: yes
 
 - name: Kubernetes(2/4) - Add Kubernetes Repo (Write)
   blockinfile:
@@ -18,7 +17,6 @@
       exclude=kubelet kubeadm kubectl
     insertafter: EOF
     marker: ¨¨
-  become: yes
 
 - name: Kubernetes(3/4) -  Install Binaries
   dnf: 
@@ -28,7 +26,6 @@
       - kubectl 
     state: present
     disable_excludes: kubernetes
-  become: yes
 
 - name: Kubernetes(4/4) - Restart Kubelet
   systemd:
@@ -36,5 +33,4 @@
     state: started
     enabled: yes
     daemon_reload: yes
-  become: yes
 

@@ -4,7 +4,6 @@
     state: started
     enabled: yes
     masked: no
-  become: yes
   when: ansible_os_family == 'RedHat'
   with_items:
     - "nfs-server"
@@ -15,7 +14,6 @@
     state: started
     enabled: yes
     masked: no
-  become: yes
   when: ansible_os_family == 'Debian'
   with_items:
     - "nfs-kernel-server"

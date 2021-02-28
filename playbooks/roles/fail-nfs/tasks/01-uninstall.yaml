@@ -11,6 +11,5 @@
   apt:
     name: "{{ nfs_items_deb }}"
     state: absent
-  become: yes
   when: ansible_os_family == 'Debian'
 
