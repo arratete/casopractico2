@@ -1,0 +1,6 @@
+---
+
+- include_tasks: 01-namespace.yaml
+- include_tasks: 02-storage.yaml
+- include_tasks: 03-deployment.yaml
+- include_tasks: 04-shared.yaml

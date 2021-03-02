@@ -9,6 +9,8 @@
       with_items:
         - "10250/tcp"
         - "30000-32767/tcp"
+        - "8285/tcp"
+        - "8472/tcp"
 
     - name: Config Kubernetes Workers (2/4) - Print kudeadm
       debug:

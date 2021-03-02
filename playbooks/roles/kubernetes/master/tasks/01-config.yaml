@@ -74,6 +74,6 @@
   
   - name: Config Kubernetes Master (9/9) - Change admin.conf permission
     file:
-      path: /etc/kubernetes/admin.conf
+      path: /root/.kube/config
       owner: "{{ ansible_effective_user_id }}"
       group: "{{ ansible_effective_group_id }}"

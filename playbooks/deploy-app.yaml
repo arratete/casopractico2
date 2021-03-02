@@ -1,0 +1,9 @@
+---
+  - name: Deploy App
+    hosts: master
+    vars_files:
+    - "group_vars/app.yaml"
+    gather_facts: yes
+    become: yes
+    roles:
+    - { role: app/master, tags: master }

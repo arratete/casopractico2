@@ -1,0 +1,6 @@
+---
+
+appname: webapp-volumes
+
+nfs_private_ip: 10.0.1.11
+nfs_public_ip: 137.116.217.4

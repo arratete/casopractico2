@@ -1,0 +1,68 @@
+    - name: Create app directory
+      file:
+        path: /etc/app
+        state: directory
+
+    - name: Create nfs-pv.yaml Files-p
+      file:
+        path: /etc/app/nfs-pv.yaml
+        state: touch
+
+    - name: Modify nfs-pv.yaml File
+      blockinfile:
+        path: /etc/app/nfs-pv.yaml
+        block: |
+          apiVersion: v1
+          kind: PersistentVolume
+          metadata:
+            name: nfs-pv
+            namespace: {{ appname }}
+          spec:
+            capacity:
+              storage: 10Gi
+            volumeMode: Filesystem
+            accessModes:
+              - ReadWriteMany
+            persistentVolumeReclaimPolicy: Recycle
+            storageClassName: nfs
+            mountOptions:
+              - hard
+              - nfsvers=4.1
+            nfs:
+              path: /srv/nfs
+              server: {{ nfs_private_ip }}
+        insertafter: EOF
+        marker: "## {mark} {{ appname }}"
+             
+    - name: Define Persistent Volume
+      shell: kubectl apply -f /etc/app/nfs-pv.yaml
+
+    - name: Define Persistent Volume
+      shell: kubectl get pv --namespace={{ appname }} 
+    
+    - name: Create nfs-pvc.yaml File
+      file:
+        path: /etc/app/nfs-pvc.yaml
+        state: touch
+
+    - name: Modify nfs-pvc.yaml File
+      blockinfile:
+        path: /etc/app/nfs-pvc.yaml
+        block: |
+          apiVersion: v1
+          kind: PersistentVolumeClaim
+          metadata:
+            name: nfs-pvc
+            namespace: {{ appname }}
+          spec:
+            storageClassName: nfs
+            accessModes:
+              - ReadWriteMany
+            resources:
+              requests:
+                storage: 2Gi
+        insertafter: EOF
+        marker: "## {mark} {{ appname }}"
+
+    - name: Claim
+      shell: kubectl apply -f /etc/app/nfs-pvc.yaml

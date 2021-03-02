@@ -1,7 +1,7 @@
-master_public_ip: 13.80.248.149
-nfs_public_ip: 13.80.247.61
-worker01_public_ip: 13.80.253.69
-worker02_public_ip: 13.80.253.239
+master_public_ip: 137.116.218.166
+nfs_public_ip: 137.116.217.4
+worker01_public_ip: 137.116.218.198
+worker02_public_ip: 137.116.218.187
 
 master_private_ip: 10.0.1.10
 nfs_private_ip: 10.0.1.11
