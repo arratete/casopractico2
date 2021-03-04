@@ -1,3 +1,4 @@
+#Arranque de servicio NFS (Red Hat)
 - name: Start Services (Red Hat)
   systemd:
     name: "{{ item }}"
@@ -8,6 +9,7 @@
   with_items:
     - "nfs-server"
 
+#Arranque de servicio NFS (Debian)
 - name: Start Services (Debian)
   systemd:
     name: "{{ item }}"

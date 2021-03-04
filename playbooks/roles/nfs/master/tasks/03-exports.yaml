@@ -1,8 +1,10 @@
+#Creación de archivo exports para la configuración del acceso compartido
 - name: Touch Exports File
   file: 
     path: /etc/exports
     state: touch
 
+#Inserción de ips de los nodos
 - name: Write Line Exports File
   lineinfile: 
     path: /etc/exports
@@ -12,11 +14,13 @@
     - { vm: 'worker01', line: '{{ worker01_private_ip }}'}
     - { vm: 'worker02', line: '{{ worker02_private_ip }}'}
 
+#Creación del directorio nfs compartido
 - name: Create nfs Directory
   file: 
     path: /srv/nfs
     state: directory
 
+#Relectura del fichero /etc/exports para aplicar la nueva configuración
 - name: Apply Configure Changes
   shell: exportfs -r && exportfs -s
 

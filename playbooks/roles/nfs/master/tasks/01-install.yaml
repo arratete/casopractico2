@@ -1,9 +1,11 @@
+#Instalación de paquetes de NFS (Red Hat)
 - name: Install NFS (Red Hat)
   dnf:
     name: "{{ nfs_items_rh }}"
     state: installed
   when: ansible_os_family == 'RedHat'
 
+#Instalación de paquetes de NFS (Debian)
 - name: Install NFS (Debian)
   apt:
     name: "{{ nfs_items_deb }}"

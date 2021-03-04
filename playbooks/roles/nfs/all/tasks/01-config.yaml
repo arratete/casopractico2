@@ -1,29 +1,36 @@
+#Configurar la sincronización horaria:
 - name: Set Time Zone
   timezone:
     name: Europe/Madrid  
 
+#Instalación del daemon Chronyd
 - name: Install Chrony 
   dnf:
     name: chrony 
     state: latest  
 
+#Habilitar daemon Chronyd
 - name: Enable and Start Chronyd
   systemd:
     name: chronyd    
     state: started
     enabled: yes
 
+#Habilitar Network Time Sync (Protocolo de Tiempo de Red)
 - name: Enable ntp
   shell: /usr/bin/timedatectl set-ntp true
 
+#Desactivar SELinux ya que no se va a utilizar con kubernetes:
 - name: Disable SELinux 
   shell: sed -i s/=enforcing/=disabled/g /etc/selinux/config
 
+#Instalación de los siguientes paquetes:
 - name: Install nfs-utils nfs4-acl-tools
   dnf:
     name: '{{ preconfig_items }}' 
     state: latest     
 
+#Habilitar el Firewall
 - name: Enable Firewall
   systemd:
     name: firewalld    
