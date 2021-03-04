@@ -1,8 +1,9 @@
-
+#Desactivar swap
   - name: Swap(1/2) - Disable swap
     shell: swapoff -a
     when: ansible_swaptotal_mb > 0
 
+#Eliminar la línea del fichero /etc/fstab que monta en el arranque el swap
   - name: Swap(2/2) - Modify /etc/fstab/
     shell: sed -i '/swap/d' /etc/fstab
     args:

@@ -1,4 +1,4 @@
-
+#Eliminación de archivo exports
   - name: Modify Exports - Absent Exports File
     file: 
       path: /etc/exports

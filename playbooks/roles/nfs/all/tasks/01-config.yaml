@@ -1,4 +1,4 @@
-#Configurar la sincronización horaria:
+#Configurar la sincronización horaria
 - name: Set Time Zone
   timezone:
     name: Europe/Madrid  
@@ -20,9 +20,13 @@
 - name: Enable ntp
   shell: /usr/bin/timedatectl set-ntp true
 
-#Desactivar SELinux ya que no se va a utilizar con kubernetes:
-- name: Disable SELinux 
-  shell: sed -i s/=enforcing/=disabled/g /etc/selinux/config
+#Desactivar SELinux ya que no se va a utilizar con kubernetes
+- name: Disable SELinux
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: 'SELINUX=enforcing'
+    line: 'SELINUX=disabled'
+  # shell: sed -i s/=enforcing/=disabled/g /etc/selinux/config
 
 #Instalación de los siguientes paquetes:
 - name: Install nfs-utils nfs4-acl-tools

@@ -1,4 +1,4 @@
-#Apertura de puertos firewall para la accesibilidad al servicio
+#Apertura de puertos firewall para accesibilidad al servicio
 - name: Firewall Configuration for NFS
   firewalld:
     service: "{{ item }}"

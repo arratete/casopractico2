@@ -1,9 +1,10 @@
-
+#Añadir el repositorio de Kubernetes (Crear fichero)
   - name: Kubernetes(1/4) - Add Kubernetes Repo (Touch)
     file:
       path: /etc/yum.repos.d/kubernetes.repo
       state: touch
 
+#Añadir el repositorio de Kubernetes (Modificar fichero)
   - name: Kubernetes(2/4) - Add Kubernetes Repo (Write)
     blockinfile:
       path: /etc/yum.repos.d/kubernetes.repo
@@ -20,6 +21,7 @@
       insertafter: EOF
       marker: "## {mark} kubernetes.repo"
 
+#Instalación de Kubernetes
   - name: Kubernetes(3/4) -  Install Binaries
     dnf: 
       name:
@@ -29,6 +31,7 @@
       state: present
       disable_excludes: kubernetes
 
+#(Re)iniciar servicio kubelet
   - name: Kubernetes(4/4) - Restart Kubelet
     systemd:
       name: kubelet    

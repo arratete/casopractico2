@@ -1,24 +1,28 @@
-
+#Comprobar existencia del operador de Tigera para evitar errores
   - name: SDN(1/5) - Check tigera-operator namespace already exists
     shell: kubectl get namespace tigera-operator
     register: tigera_operator
     ignore_errors: yes
 
+#Instalación del operador de Tigera
   - name: SDN(2/5) - Install tigera-operator
     shell: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
     when: not tigera_operator is search("Active")
-  
+
+#Descargar ficheros Calico junto con los custom resources necesarios
   - name: SDN(3/5) - Download Calico
     get_url:
       url: https://docs.projectcalico.org/manifests/custom-resources.yaml
       dest: ./custom-resources.yaml
 
+#Cambiar cidr para que coincida con el de la red de PODs
   - name: SDN(4/5) - Replace cidr
     replace:
        path: ./custom-resources.yaml
        regexp: '192.168.0.0/16'
        replace: "192.169.0.0/16"
-  
+
+#Instalar Calico:
   - name: SDN(5/5) - Install Calico
     shell: kubectl apply -f ./custom-resources.yaml
   

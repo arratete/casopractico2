@@ -1,0 +1,15 @@
+#Desinstalación de paquetes de NFS (Red Hat)
+- name: Uninstall NFS (Red Hat)
+  dnf:
+    name: "{{ nfs_items_rh }}"
+    state: absent
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+#Desinstalación de paquetes de NFS (Debian)
+- name: Uninstall NFS (Debian)
+  apt:
+    name: "{{ nfs_items_deb }}"
+    state: absent
+  when: ansible_os_family == 'Debian'
+

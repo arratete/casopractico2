@@ -1,4 +1,4 @@
-
+#Configurar firewall para acceder a los servicios de Kubernetes
   - name: Config Kubernetes Master (1/9) - Firewall Configuration for Kubernetes Services
     firewalld:
       port: "{{ item }}"
@@ -12,9 +12,11 @@
       - "10251/tcp"
       - "10255/tcp"
 
+#Configurar kudeadm
   - name: Config Kubernetes Master (2/9) - kudeadm Configuration
     shell: kubeadm config images pull
 
+#Permitir acceso desde los workers
   - name: Config Kubernetes Master (3/9) - Firewall Allow Access from Workers
     firewalld:
       rich_rule: "{{ item }}"
@@ -25,6 +27,7 @@
       - "rule family=ipv4 source address={{ worker01_private_ip }}/24 accept"
       - "rule family=ipv4 source address={{ worker02_private_ip }}/24 accept"
 
+#Permitir acceso de los contenedores a localhost
   - name: Config Kubernetes Master (4/9) - Firewall Allow Access to Localhost
     firewalld:
       rich_rule: "rule family=ipv4 source address=172.17.0.1/16 accept"
@@ -33,45 +36,50 @@
       state: enabled
       immediate: yes
 
-  - name: Config Kubernetes Master (5pre/9) - Check Ports
-    wait_for:
-      port: "{{ item }}"
-      state: started         
-      delay: 0               
-      timeout: 5
-    ignore_errors: yes
-    register: port
-    with_items:
-      - "6443"
-      - "2379"
-      #- "2380"
-      - "10250"
-      #- "10251"
-      #- "10255"
+  # - name: Config Kubernetes Master (5pre/9) - Check Ports
+  #   wait_for:
+  #     port: "{{ item }}"
+  #     state: started         
+  #     delay: 0               
+  #     timeout: 5
+  #   ignore_errors: yes
+  #   register: port
+  #   with_items:
+  #     - "6443"
+  #     - "2379"
+  #     #- "2380"
+  #     - "10250"
+  #     #- "10251"
+  #     #- "10255"
 
-  - name: Config Kubernetes Master (5pre/9) - Reset kudeadm
-    shell: kubeadm reset -f
-    when: port is search("started")
+  # - name: Config Kubernetes Master (5pre/9) - Reset kudeadm
+  #   shell: kubeadm reset -f
+  #   when: port is search("started")
 
+#Instalar el plugin CNI (Container Network Interface) 
   - name: Config Kubernetes Master (5/9) - Install CNI (Container Network Interface)
     shell: kubeadm init --pod-network-cidr 192.169.0.0/16 | tail -2
     register: kudeadm_init
     #shell: kubeadm init --pod-network-cidr 192.169.0.0/16 --ignore-preflight-errors=NumCPU
 
+#Definir la red de los PODs
   - name: Config Kubernetes Master (6/9) - Set kudeadm output as fact
     set_fact: kudeadm_init="{{ kudeadm_init.stdout }}"
 
+#Autorizar al usuario root acceder al cluster para terminar la configuración (Creación directorio)
   - name: Config Kubernetes Master (7/9) - Create kube Directory
     file: 
       path: /root/.kube
       state: directory
 
+#Autorizar al usuario root acceder al cluster para terminar la configuración (Copia de archivo a /root/.kube/config)
   - name: Config Kubernetes Master (8/9) - Copy admin.conf
     copy:
       remote_src: yes
       src: /etc/kubernetes/admin.conf
       dest: /root/.kube/config
-  
+
+#Autorizar al usuario root acceder al cluster para terminar la configuración (Cambiar permisos archivo admin.conf)
   - name: Config Kubernetes Master (9/9) - Change admin.conf permission
     file:
       path: /root/.kube/config

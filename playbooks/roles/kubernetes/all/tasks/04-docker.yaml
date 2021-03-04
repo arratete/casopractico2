@@ -1,16 +1,17 @@
-
+#Descargar Docker como engine para ejecutar contenedores
   - name: Docker(1/3) - Add Docker Repo
     get_url:
       url: https://download.docker.com/linux/centos/docker-ce.repo
       dest: /etc/yum.repos.d/docer-ce.repo
-    #shell: dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 
+#Instalar Docker como engine para ejecutar contenedores
   - name: Docker(2/3) - Install Docker
     dnf:
       name: docker-ce
-      state: latest
-    #shell: dnf install docker-ce-19.03.14-3.el8 containerd.io -y  
+      state: latest 
+    #shell: dnf install docker-ce-19.03.14-3.el8 containerd.io -y 
 
+#Arrancar servicio Docker 
   - name: Docker(3/3) - Start Docker service
     systemd:
       name: docker

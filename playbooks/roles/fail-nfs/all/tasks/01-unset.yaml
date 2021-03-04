@@ -1,0 +1,19 @@
+#Desinstalación del daemon Chronyd
+- name: Uninstall Chrony 
+  dnf:
+    name: chrony 
+    state: absent  
+
+#Activar SELinux
+- name: Enable SELinux
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: 'SELINUX=disabled'
+    line: 'SELINUX=enforcing'
+  # shell: sed -i s/=disabled/=enforcing/g /etc/selinux/config
+
+#Instalación de los siguientes paquetes:
+- name: Uninstall nfs-utils nfs4-acl-tools
+  dnf:
+    name: '{{ preconfig_items }}' 
+    state: absent     

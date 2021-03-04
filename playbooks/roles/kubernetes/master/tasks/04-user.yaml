@@ -1,35 +1,40 @@
-
+#Crear un usuario no administrador para la gestión del clúster
   - name: User(1/6) - Create kubeadmin User
     user:
       name: "{{ username }}"
       create_home: yes
       password: "{{ username | password_hash('sha512') }}"
 
+#Autorizar al usuario no administrador acceder al cluster (Creación directorio)
   - name: User(2/6) - Create kube Directory
     file: 
-      path: /home/kubeadmin/.kube
+      path: /home/{{ username }}/.kube
       state: directory
 
+#Autorizar al usuario no administrador acceder al cluster (Copia de archivo a /{{ username }}/.kube/config)
   - name: User(3/6) - Copy admin.conf
     copy:
       remote_src: yes
       src: /etc/kubernetes/admin.conf
-      dest: /home/kubeadmin/.kube/config
+      dest: /home/{{ username }}/.kube/config
 
+#Autorizar al usuario no administrador acceder al cluster (Cambiar permisos archivo admin.conf)
   - name: User(4/6) - Change admin.conf permission
     file:
-      path: /home/kubeadmin/.kube/config
+      path: /home/{{ username }}/.kube/config
       owner: "{{ username }}"
       group: "{{ username }}"
 
-  - name: User(5/6) - Add kubeadmin file(Touch)
+#Autorizar al usuario no administrador acceder al cluster (Crear archivo {{ username }})
+  - name: User(5/6) - Add {{ username }} file(Touch)
     file:
-      path: /etc/sudoers.d/kubeadmin
+      path: /etc/sudoers.d/{{ username }}
       state: touch
 
+#Autorizar al usuario no administrador acceder al cluster (Permitir a {{ username }} ser root sin necesidad de introducir password)
   - name: User(6/6) - Allow {{ username }} passwordless sudo
     lineinfile:
-      dest: /etc/sudoers.d/kubeadmin
+      dest: /etc/sudoers.d/{{ username }}
       state: present
       regexp: '^%{{ username }}' 
       line: '%{{ username }} ALL=(ALL) NOPASSWD: ALL'

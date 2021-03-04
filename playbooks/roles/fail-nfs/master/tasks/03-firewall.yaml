@@ -1,4 +1,4 @@
-
+#Deshabilitar puertos firewall para no dar accesibilidad al servicio
   - name: Disable Firewall Configuration for NFS
     firewalld:
       service: "{{ item }}"
