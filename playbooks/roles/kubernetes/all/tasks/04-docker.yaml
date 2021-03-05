@@ -11,6 +11,10 @@
       state: latest 
     #shell: dnf install docker-ce-19.03.14-3.el8 containerd.io -y 
 
+#Pausa prudencial antes de iniciar Docker y evitar errores
+  - pause:
+      minutes: 2
+
 #Arrancar servicio Docker 
   - name: Docker(3/3) - Start Docker service
     systemd:
