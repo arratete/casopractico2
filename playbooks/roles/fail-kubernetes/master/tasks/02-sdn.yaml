@@ -1,0 +1,10 @@
+#Cerrar los puertos "8285/tcp" y "8472/tcp"
+  - name: SDN(1/1) - Config SDN Azure
+    firewalld:
+      port: "{{ item }}"
+      permanent: yes
+      state: disabled
+      immediate: yes
+    with_items:
+      - "8285/tcp"
+      - "8472/tcp"

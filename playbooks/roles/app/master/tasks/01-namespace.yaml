@@ -1,5 +1,5 @@
 
-    - name: Check is namespace {{ appname }} exists
+    - name: Check if namespace {{ appname }} exists
       shell: kubectl get namespaces
       register: kubectl_namespaces      
 

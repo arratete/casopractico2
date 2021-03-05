@@ -1,4 +1,4 @@
-#Abrir los Puertos {"10250/tcp", "30000-32767/tcp", "8285/tcp", "8472/tcp"}
+#Abrir puertos {"10250/tcp", "30000-32767/tcp", "8285/tcp", "8472/tcp"}
     - name: Config Kubernetes Workers (1/4) - Open Ports
       firewalld:
         port: "{{ item }}"
@@ -20,7 +20,7 @@
 #Ejecutar en los nodos el comando de kubeadm de la ejecución kubadmin init
     - name: Config Kubernetes Workers (3/4) - Execute kudeadm
       shell: "{{ hostvars['master']['kudeadm_init'] }}"
-      ignore_errors: yes
+      when: hostvars['master']['kudeadm_init'] is search("kubeadm join")
 
 #Guardar la ejecución de kudeadm_join para futuras comprobaciones
     - name: Config Kubernetes Workers (4/4) - Set kudeadm_join as fact

@@ -8,7 +8,7 @@
 #Habilitar firewall transparent masquerading para que los PODs puedan comunicarse dentro del cluster mediante VXLAN
   - name: Firewall(2/5) - Enable Firewall
     firewalld:
-      masquerade: yes
+      masquerade: "yes"
       state: enabled
       permanent: yes
       immediate: yes

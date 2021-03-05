@@ -1,0 +1,9 @@
+
+    - name: Check if namespace {{ appname }} exists
+      shell: kubectl get namespaces
+      register: kubectl_namespaces      
+
+    - name: Delete {{ appname }} namespace
+      shell: kubectl delete namespace {{ appname }}
+      when: 'appname in kubectl_namespaces.stdout'
+

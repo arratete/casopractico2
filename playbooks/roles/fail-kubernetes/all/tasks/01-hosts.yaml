@@ -1,0 +1,8 @@
+
+#Eliminar en el fichero /etc/hosts las ip públicas de los nodos
+  - name: Hosts(1/1) - Remove configuration DNS Servers
+    blockinfile: 
+      path: /etc/hosts 
+      block: ""
+      marker: "## {mark} DNS Servers"
+

@@ -1,0 +1,12 @@
+#Eliminar el repositorio de Docker
+  - name: Docker(1/2) - Remove Docker Repo
+    file:
+      path: /etc/yum.repos.d/docer-ce.repo
+      state: absent
+
+#Desinstalar Docker como engine para ejecutar contenedores
+  - name: Docker(2/2) - Uninstall Docker
+    dnf:
+      name: docker-ce
+      state: absent
+

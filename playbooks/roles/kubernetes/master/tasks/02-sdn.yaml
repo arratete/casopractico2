@@ -22,7 +22,7 @@
        regexp: '192.168.0.0/16'
        replace: "192.169.0.0/16"
 
-#Instalar Calico:
+#Instalar Calico
   - name: SDN(5/5) - Install Calico
     shell: kubectl apply -f ./custom-resources.yaml
   

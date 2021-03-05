@@ -1,0 +1,6 @@
+  
+    - name: Remove webapp-volumes.yaml File
+      file:
+        path: /etc/app/webapp-volumes.yaml
+        state: absent
+  

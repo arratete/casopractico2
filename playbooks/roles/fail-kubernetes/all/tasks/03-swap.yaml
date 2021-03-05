@@ -1,0 +1,18 @@
+#Activar swap
+  - name: Swap(1/3) - Enable swap
+    shell: swapon -a
+    when: ansible_swaptotal_mb == 0
+
+#Recoger valor UUID swap
+  - name: Swap(2/3) - Get swap UUID if exists
+    shell: blkid | sed '/TYPE="swap"/!d;s/.* UUID=\"\([^\"]*\)\".*/\1/'
+    register: swap_uuid
+
+#Añadir la línea del fichero /etc/fstab que monta en el arranque el swap
+  - name: Swap(3/3) - Modify /etc/fstab/
+    blockinfile:
+      path: /etc/fstab
+      state: present
+      block: |
+        UUID={{ swap_uuid.stdout }}   swap      swap defaults                         0   0
+    when: swap_uuid.stdout != ""

@@ -5,7 +5,9 @@
 
 #Eliminar la línea del fichero /etc/fstab que monta en el arranque el swap
   - name: Swap(2/2) - Modify /etc/fstab/
-    shell: sed -i '/swap/d' /etc/fstab
-    args:
-      warn: false
+    lineinfile:
+      path: /etc/fstab
+      regexp: '/swap/d'
+      line: ''
+    # shell: sed -i '/swap/d' /etc/fstab
 

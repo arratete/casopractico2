@@ -1,0 +1,16 @@
+#Eliminar el repositorio de Kubernetes
+  - name: Kubernetes(1/2) - Remove Kubernetes Repo
+    file:
+      path: /etc/yum.repos.d/kubernetes.repo
+      state: absent
+
+#Desinstalar Kubernetes
+  - name: Kubernetes(2/2) -  Uninstall Binaries
+    dnf: 
+      name:
+        - kubelet
+        - kubeadm
+        - kubectl 
+      state: absent
+
+

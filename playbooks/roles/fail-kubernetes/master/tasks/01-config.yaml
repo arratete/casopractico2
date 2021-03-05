@@ -1,0 +1,39 @@
+#Deshabilitar firewall 
+  - name: Config Kubernetes Master (1/4) - Disable Firewall for Kubernetes Services
+    firewalld:
+      port: "{{ item }}"
+      permanent: yes
+      state: disabled
+      immediate: yes
+    with_items:
+      - "6443/tcp"
+      - "2379-2380/tcp"
+      - "10250/tcp"
+      - "10251/tcp"
+      - "10255/tcp"
+
+#Deshabilitar acceso desde los workers
+  - name: Config Kubernetes Master (2/4) - Firewall Deny Access from Workers
+    firewalld:
+      rich_rule: "{{ item }}"
+      permanent: yes
+      state: disabled
+      immediate: yes
+    with_items:
+      - "rule family=ipv4 source address={{ worker01_private_ip }}/24 accept"
+      - "rule family=ipv4 source address={{ worker02_private_ip }}/24 accept"
+
+#Deshabilitar acceso de los contenedores a localhost
+  - name: Config Kubernetes Master (3/4) - Firewall Deny Access to Localhost
+    firewalld:
+      rich_rule: "rule family=ipv4 source address=172.17.0.1/16 accept"
+      zone: public
+      permanent: yes
+      state: disabled
+      immediate: yes
+
+#Eliminar Directorio
+  - name: Config Kubernetes Master (4/4) - Remove kube Directory
+    file: 
+      path: /root/.kube
+      state: absent

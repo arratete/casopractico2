@@ -1,0 +1,5 @@
+  
+    - name: Remove index.php File
+      file:
+        path: /srv/nfs/index.php
+        state: absent

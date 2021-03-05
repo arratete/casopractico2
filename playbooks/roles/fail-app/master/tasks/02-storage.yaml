@@ -1,0 +1,5 @@
+    - name: Remove app directory
+      file:
+        path: /etc/app
+        state: absent
+

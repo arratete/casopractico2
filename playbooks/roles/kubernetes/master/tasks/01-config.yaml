@@ -36,25 +36,8 @@
       state: enabled
       immediate: yes
 
-  # - name: Config Kubernetes Master (5pre/9) - Check Ports
-  #   wait_for:
-  #     port: "{{ item }}"
-  #     state: started         
-  #     delay: 0               
-  #     timeout: 5
-  #   ignore_errors: yes
-  #   register: port
-  #   with_items:
-  #     - "6443"
-  #     - "2379"
-  #     #- "2380"
-  #     - "10250"
-  #     #- "10251"
-  #     #- "10255"
-
-  # - name: Config Kubernetes Master (5pre/9) - Reset kudeadm
+  # - name: Config Kubernetes Master - Reset kudeadm
   #   shell: kubeadm reset -f
-  #   when: port is search("started")
 
 #Instalar el plugin CNI (Container Network Interface) 
   - name: Config Kubernetes Master (5/9) - Install CNI (Container Network Interface)
@@ -65,6 +48,10 @@
 #Definir la red de los PODs
   - name: Config Kubernetes Master (6/9) - Set kudeadm output as fact
     set_fact: kudeadm_init="{{ kudeadm_init.stdout }}"
+
+  # - name: Config Kubernetes Master -  Print kudeadm_init
+  #   debug:
+  #     msg: "{{ hostvars['master']['kudeadm_init'] }}"
 
 #Autorizar al usuario root acceder al cluster para terminar la configuración (Creación directorio)
   - name: Config Kubernetes Master (7/9) - Create kube Directory
@@ -83,5 +70,5 @@
   - name: Config Kubernetes Master (9/9) - Change admin.conf permission
     file:
       path: /root/.kube/config
-      owner: "{{ ansible_effective_user_id }}"
-      group: "{{ ansible_effective_group_id }}"
+      owner: "{{ ansible_effective_user_id |string }}"
+      group: "{{ ansible_effective_group_id |string }}"
