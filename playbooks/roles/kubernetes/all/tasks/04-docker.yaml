@@ -11,7 +11,7 @@
       state: latest 
     #shell: dnf install docker-ce-19.03.14-3.el8 containerd.io -y 
 
-#Pausa prudencial antes de iniciar Docker y evitar errores
+#Pausa prudencial antes de iniciar Docker
   - pause:
       minutes: 2
 
